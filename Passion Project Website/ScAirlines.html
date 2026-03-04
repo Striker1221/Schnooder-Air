@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schnooder Airlines</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Reset & Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Nunito', Helvetica, sans-serif;
+    }
+
+    body {
+      color: #2d3748;
+      background: #f8f9fa;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #0b3d91;
+      border-radius: 4px;
+    }
+
+    /* Top Ticker Notice */
+    .notice-bar {
+      background: #0b3d91;
+      color: #fff;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 8px 15px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .notice-bar span {
+      color: #ffb74d;
+    }
+
+    /* Navbar */
+    header {
+      background: rgba(255, 255, 255, 0.98);
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #edf2f7;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+      backdrop-filter: blur(10px);
+    }
+
+    /* LOGO & ANIMATIONS (Preserved exactly as requested) */
+    .logo {
+      position: relative;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #0b3d91;
+      /* Refined color to match brand */
+      letter-spacing: 0.5px;
+      display: inline-block;
+      text-transform: uppercase;
+    }
+
+    .o-letter {
+      position: relative;
+      display: inline-block;
+    }
+
+    .propeller {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 13px;
+      height: 13px;
+      background: url('images/propeller.png') center/contain no-repeat;
+      transform: translate(-50%, -50%);
+      animation: spin-slow 2s linear infinite;
+    }
+
+    @keyframes spin-slow {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    .spin-fast {
+      animation: spin-fast 0.35s linear infinite !important;
+    }
+
+    @keyframes spin-fast {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    /* Plane takeoff animation */
+    .plane {
+      position: absolute;
+      width: 28px;
+      left: 54%;
+      bottom: 40px;
+      opacity: 0;
+      transform: translate(0, 0) rotate(0deg);
+    }
+
+    .plane.fly {
+      animation: planeTakeoff 1.8s ease-out forwards;
+    }
+
+    @keyframes planeTakeoff {
+      0% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(0deg);
+      }
+
+      20% {
+        opacity: 1;
+        transform: translate(18px, 0) rotate(0deg);
+      }
+
+      55% {
+        transform: translate(32px, -5px) rotate(-12deg);
+      }
+
+      100% {
+        transform: translate(55px, -28px) rotate(-18deg);
+      }
+    }
+
+    .center-logo {
+      height: 60px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Nav Links */
+    nav {
+      display: flex;
+      gap: 30px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #4a5568;
+      font-weight: 600;
+      transition: color 0.3s;
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #ff9800;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #0b3d91;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero */
+    .hero {
+      height: 65vh;
+      background: linear-gradient(to right, rgba(11, 61, 145, 0.8), rgba(0, 0, 0, 0.3)), url('images/hero.jpg') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hero-content {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      margin-bottom: 15px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero h1 span {
+      color: #ffb74d;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      font-weight: 500;
+      opacity: 0.95;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Booking Widget Card */
+    .booking-wrapper {
+      position: relative;
+      margin-top: -60px;
+      /* Pulls up over the hero image */
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      padding: 0 20px;
+    }
+
+    .booking-widget {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      display: flex;
+      gap: 20px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      border-top: 5px solid #0b3d91;
+      animation: fadeInUp 1s ease-out 0.2s both;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .input-group label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #718096;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .input-group input {
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 2px solid #e2e8f0;
+      font-size: 1rem;
+      color: #2d3748;
+      transition: all 0.3s ease;
+      outline: none;
+      background: #f8f9fa;
+      font-weight: 500;
+    }
+
+    .input-group input:focus {
+      border-color: #0b3d91;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(11, 61, 145, 0.1);
+    }
+
+    .search-btn {
+      padding: 14px 35px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      background: #ff9800;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 140px;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(255, 152, 0, 0.25);
+    }
+
+    .search-btn:hover {
+      background: #f57c00;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(255, 152, 0, 0.35);
+    }
+
+    .search-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Destinations */
+    .section {
+      padding: 90px 40px 60px;
+      text-align: center;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section h2 {
+      font-size: 2.4rem;
+      color: #0b3d91;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      color: #718096;
+      font-size: 1.1rem;
+      margin-bottom: 50px;
+      font-weight: 500;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      border-radius: 16px;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      text-align: left;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+
+    .img-wrapper {
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease, opacity 0.8s ease-in-out;
+    }
+
+    .card:hover img {
+      transform: scale(1.08);
+      /* Niche subtle zoom effect */
+    }
+
+    .price-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(11, 61, 145, 0.85);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      backdrop-filter: blur(4px);
+    }
+
+    .card-content {
+      padding: 25px;
+    }
+
+    .card h3 {
+      font-size: 1.35rem;
+      color: #2d3748;
+      margin-bottom: 6px;
+      font-weight: 800;
+    }
+
+    .card p.desc {
+      font-size: 0.95rem;
+      color: #718096;
+      margin-bottom: 18px;
+    }
+
+    .explore-link {
+      display: inline-flex;
+      align-items: center;
+      color: #0b3d91;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .card:hover .explore-link {
+      color: #ff9800;
+    }
+
+    .explore-link svg {
+      width: 16px;
+      height: 16px;
+      margin-left: 6px;
+      transition: transform 0.3s;
+    }
+
+    .card:hover .explore-link svg {
+      transform: translateX(5px);
+    }
+
+    /* Footer */
+    footer {
+      background: #0b3d91;
+      color: white;
+      padding: 60px 40px 25px;
+      margin-top: 40px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .footer-col {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .footer-col h4 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      color: #ffb74d;
+      font-weight: 800;
+    }
+
+    .footer-col p,
+    .footer-col li {
+      color: #cbd5e0;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col a {
+      color: #cbd5e0;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 40px;
+      padding-top: 25px;
+      color: #a0aec0;
+      font-size: 0.85rem;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Top Banner / Ticker -->
+  <div class="notice-bar">
+    ✈️ Update: Schnooder Airlines voted <span>#1 Regional Airline of 2026</span>! Book your next getaway today.
+  </div>
+
+  <!-- Navbar -->
+  <header>
+    <div class="logo">
+      S C H N
+      <span class="o-letter">
+        O
+        <span class="propeller"></span>
+      </span>
+      <span class="o-letter">
+        O
+        <span class="propeller"></span>
+      </span>
+      DER Airlines
+
+      <img src="images/blackplaneicon.png" class="plane" alt="plane">
+    </div>
+    <img src="images/Logo.png" alt="Logo" class="center-logo">
+    <nav>
+      <a href="#">Book</a>
+      <a href="#">Destinations</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Fly Simple. Fly Fast.<br>Fly <span>Schnooder</span>.</h1>
+      <p>Regional comfort with a personal, premium touch.</p>
+    </div>
+  </section>
+
+  <!-- Floating Booking Widget -->
+  <div class="booking-wrapper">
+    <div class="booking-widget">
+      <!-- Better inputs with labels -->
+      <div class="input-group">
+        <label for="from">Departure</label>
+        <input id="from" type="text" placeholder="City or Airport">
+      </div>
+
+      <div class="input-group">
+        <label for="to">Destination</label>
+        <input id="to" type="text" placeholder="Where to?">
+      </div>
+
+      <div class="input-group">
+        <label for="date">Travel Date</label>
+        <input id="date" type="date">
+      </div>
+
+      <button class="search-btn" onclick="searchFlights()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        Search Flights
+      </button>
+    </div>
+  </div>
+
+  <!-- Destinations -->
+  <section class="section">
+    <h2>Popular Escapes</h2>
+    <p class="subtitle">Discover our most booked regional routes this week.</p>
+
+    <div class="cards">
+      <!-- Card 1 -->
+      <div class="card">
+        <div class="img-wrapper">
+          <div class="price-badge">From $89</div>
+          <img src="images/destination1.jpg" alt="Miami">
+        </div>
+        <div class="card-content">
+          <h3>Miami, Florida</h3>
+          <p class="desc">Sun, beautiful beaches, and vibrant nightlife await.</p>
+          <a href="#" class="explore-link">
+            Explore Flights
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card">
+        <div class="img-wrapper">
+          <div class="price-badge">From $64</div>
+          <img src="images/destination2.jpg" alt="Washington DC">
+        </div>
+        <div class="card-content">
+          <h3>Washington, D.C.</h3>
+          <p class="desc">Experience history, culture, and iconic monuments.</p>
+          <a href="#" class="explore-link">
+            Explore Flights
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card">
+        <div class="img-wrapper">
+          <div class="price-badge">From $45</div>
+          <img src="images/destination3.png" alt="Richmond">
+        </div>
+        <div class="card-content">
+          <h3>Richmond, Virginia</h3>
+          <p class="desc">Rich history combined with a modern artsy vibe.</p>
+          <a href="#" class="explore-link">
+            Explore Flights
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-col">
+        <h4>Schnooder Airlines</h4>
+        <p>Your regional comfort partner.<br>Fly Simple. Fly Fast. Fly Schnooder.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#">Flight Status</a></li>
+          <li><a href="#">Baggage Policy</a></li>
+          <li><a href="#">Reward Program</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Accessibility</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Schnooder Airlines • All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Search handler
+    function searchFlights() {
+      const from = document.querySelector("#from").value.trim();
+      const to = document.querySelector("#to").value.trim();
+      const date = document.querySelector("#date").value;
+
+      if (!from || !to) {
+        alert("Please enter both departure and destination cities to search.");
+        return;
+      }
+
+      window.location.href = `results.html?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(date)}`;
+    }
+
+    // Logo animations preserved
+    window.addEventListener("load", () => {
+      const plane = document.querySelector(".plane");
+      const props = document.querySelectorAll(".propeller");
+
+      props.forEach(p => p.classList.add("spin-fast"));
+      plane.classList.add("fly");
+
+      setTimeout(() => {
+        props.forEach(p => p.classList.remove("spin-fast"));
+      }, 1200);
+    });
+
+    // Destination cards image cycling details
+    const destinationData = [
+      { images: ['images/destination1.jpg', 'images/destination1b.jpg', 'images/destination1c.jpg'] },
+      { images: ['images/destination2.jpg', 'images/destination2b.jpg', 'images/destination2c.jpg'] },
+      { images: ['images/destination3.png', 'images/destination3b.jpg'] }
+    ];
+
+    document.querySelectorAll('.card').forEach((card, index) => {
+      if (index >= destinationData.length) return;
+
+      const img = card.querySelector('.img-wrapper img');
+      const images = destinationData[index].images;
+      let cycleInterval;
+      let currentIndex = 0;
+
+      card.addEventListener('mouseenter', () => {
+        cycleInterval = setInterval(() => {
+          currentIndex = (currentIndex + 1) % images.length;
+          // Fade out slower
+          img.style.opacity = '0.4';
+
+          // Wait for the fade out to almost finish, then swap and fade back in
+          setTimeout(() => {
+            img.src = images[currentIndex];
+            img.style.opacity = '1';
+          }, 600);
+        }, 2500); // changes every 2.5 seconds (slower)
+      });
+
+      card.addEventListener('mouseleave', () => {
+        clearInterval(cycleInterval);
+        currentIndex = 0;
+
+        // Return to original smoothly
+        img.style.opacity = '0.4';
+        setTimeout(() => {
+          img.src = images[0];
+          img.style.opacity = '1';
+        }, 600);
+      });
+    });
+  </script>
+
+</body>
+
+</html>
